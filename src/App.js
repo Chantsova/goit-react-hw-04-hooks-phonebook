@@ -5,23 +5,21 @@ import ContactList from './components/ContactList/ContactList';
 import Filter from './components/Filter/Filter.jsx';
 
 export default function App() {
-  const [contacts, setContacts] = useState([
-    { id: 'id-1', name: 'Anastasia', number: '161-69-55' },
-    { id: 'id-2', name: 'Svetlana Divnaya', number: '443-89-12' },
-    { id: 'id-3', name: 'Illya Chantsov', number: '645-17-79' },
-    { id: 'id-4', name: 'Tatiana Zhelezina', number: '227-91-26' },
-  ]);
+  const [contacts, setContacts] = useState(() => {
+    return (
+      JSON.parse(window.localStorage.getItem('contacts')) ?? [
+        { id: 'id-1', name: 'Anastasia', number: '161-69-55' },
+        { id: 'id-2', name: 'Svetlana Divnaya', number: '443-89-12' },
+        { id: 'id-3', name: 'Illya Chantsov', number: '645-17-79' },
+        { id: 'id-4', name: 'Tatiana Zhelezina', number: '227-91-26' },
+      ]
+    );
+  });
 
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    const savedContacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(savedContacts);
-    setContacts(parsedContacts);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
+    window.localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
   const deleteContacts = contactId => {
